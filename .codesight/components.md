@@ -60,7 +60,7 @@
 - **LinkPreview** [client] — props: containerRef, workspaceId — `apps/web/components/link-preview.tsx`
 - **MarkFlowLogo** — props: height, showTagline, dark — `apps/web/components/mark-flow-logo.tsx`
 - **MindMapCanvas** [client] — props: nodes, edges, categories, selectedDocId, onSelectDoc, onRightClickDoc, tagLinks, dark — `apps/web/components/mind-map-canvas.tsx`
-- **MiniDagDiagram** [client] — props: currentTitle, categoryName, prev, next, related, onClickFullView — `apps/web/components/mini-dag-diagram.tsx`
+- **MiniDagDiagram** [client] — props: currentTitle, categoryName, prev, next, siblings, onClickFullView — `apps/web/components/mini-dag-diagram.tsx`
 - **NewDocModal** [client] — props: open, onClose, workspaceSlug, workspaceId, categories — `apps/web/components/new-doc-modal.tsx`
 - **NewFolderModal** [client] — props: open, onClose, workspaceId, categories, defaultParentId, onCreated — `apps/web/components/new-folder-modal.tsx`
 - **PasswordChangeModal** [client] — props: isOpen, onClose — `apps/web/components/password-change-modal.tsx`

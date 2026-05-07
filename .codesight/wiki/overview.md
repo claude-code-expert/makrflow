@@ -8,7 +8,7 @@
 
 ## Scale
 
-64 API routes · 15 database models · 87 UI components · 39 library files · 4 middleware layers · 21 environment variables
+64 API routes · 15 database models · 87 UI components · 41 library files · 4 middleware layers · 21 environment variables
 
 ## Subsystems
 
@@ -19,7 +19,7 @@
 
 **UI:** 87 components (react) — see [ui.md](./ui.md)
 
-**Libraries:** 39 files — see [libraries.md](./libraries.md)
+**Libraries:** 41 files — see [libraries.md](./libraries.md)
 
 ## High-Impact Files
 
@@ -47,4 +47,4 @@ Changes to these files have the widest blast radius across the codebase:
 - `RESEND_API_KEY` — `apps/web/lib/server/utils/email.ts`
 
 ---
-_Back to [index.md](./index.md) · Generated 2026-04-23_
+_Back to [index.md](./index.md) · Generated 2026-05-07_

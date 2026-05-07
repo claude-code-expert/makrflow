@@ -3,9 +3,9 @@
 > **Stack:** next-app | drizzle | react | typescript
 > **Monorepo:** @markflow/db, @markflow/editor, @markflow/web, markflow-r2-uploader
 
-> 64 routes | 15 models | 87 components | 39 lib files | 21 env vars | 4 middleware | 6% test coverage
-> **Token savings:** this file is ~8,600 tokens. Without it, AI exploration would cost ~90,400 tokens. **Saves ~81,800 tokens per conversation.**
-> **Last scanned:** 2026-04-23 12:05 — re-run after significant changes
+> 64 routes | 15 models | 87 components | 41 lib files | 21 env vars | 4 middleware | 6% test coverage
+> **Token savings:** this file is ~8,600 tokens. Without it, AI exploration would cost ~90,900 tokens. **Saves ~82,300 tokens per conversation.**
+> **Last scanned:** 2026-05-07 06:57 — re-run after significant changes
 
 ---
 
@@ -278,7 +278,7 @@
 - **LinkPreview** [client] — props: containerRef, workspaceId — `apps/web/components/link-preview.tsx`
 - **MarkFlowLogo** — props: height, showTagline, dark — `apps/web/components/mark-flow-logo.tsx`
 - **MindMapCanvas** [client] — props: nodes, edges, categories, selectedDocId, onSelectDoc, onRightClickDoc, tagLinks, dark — `apps/web/components/mind-map-canvas.tsx`
-- **MiniDagDiagram** [client] — props: currentTitle, categoryName, prev, next, related, onClickFullView — `apps/web/components/mini-dag-diagram.tsx`
+- **MiniDagDiagram** [client] — props: currentTitle, categoryName, prev, next, siblings, onClickFullView — `apps/web/components/mini-dag-diagram.tsx`
 - **NewDocModal** [client] — props: open, onClose, workspaceSlug, workspaceId, categories — `apps/web/components/new-doc-modal.tsx`
 - **NewFolderModal** [client] — props: open, onClose, workspaceId, categories, defaultParentId, onCreated — `apps/web/components/new-folder-modal.tsx`
 - **PasswordChangeModal** [client] — props: isOpen, onClose — `apps/web/components/password-change-modal.tsx`
@@ -370,6 +370,7 @@
   - function passwordResetEmailHtml: (resetUrl) => string
   - function invitationEmailHtml: (inviteUrl, workspaceName, inviterName) => string
   - const FRONTEND_URL
+- `apps/web/lib/server/utils/embed-images.ts` — function embedImagesInHtml: (html, options?) => Promise<string>
 - `apps/web/lib/server/utils/errors.ts`
   - function notFound: (message) => AppError
   - function forbidden: (message) => AppError
@@ -390,6 +391,7 @@
   - function hashPassword: (password) => Promise<string>
   - function comparePassword: (password, hash) => Promise<boolean>
   - function validatePassword: (password) => void
+- `apps/web/lib/server/utils/pdf-template.ts` — function wrapForPdf: (title, bodyHtml) => string
 - `apps/worker/src/helpers.ts`
   - function corsHeaders: (request, env) => Record<string, string>
   - function jsonResponse: (body, status, cors, string>) => Response
@@ -463,7 +465,7 @@
 - `apps/web/stores/toast-store.ts` — imported by **20** files
 - `apps/web/stores/workspace-store.ts` — imported by **19** files
 - `apps/web/lib/types.ts` — imported by **16** files
-- `apps/web/lib/server/utils/logger.ts` — imported by **14** files
+- `apps/web/lib/server/utils/logger.ts` — imported by **15** files
 - `apps/web/lib/date.ts` — imported by **9** files
 - `apps/web/lib/server/services/auth-service.ts` — imported by **9** files
 - `packages/db/src/schema/users.ts` — imported by **9** files
@@ -486,7 +488,7 @@
 - `apps/web/stores/toast-store.ts` ← `apps/web/__tests__/stores/toast-store.test.ts`, `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/new/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/settings/embed/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/settings/storage/page.tsx` +15 more
 - `apps/web/stores/workspace-store.ts` ← `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/new/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/graph/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/layout.tsx` +14 more
 - `apps/web/lib/types.ts` ← `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/new/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/graph/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/settings/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/trash/page.tsx` +11 more
-- `apps/web/lib/server/utils/logger.ts` ← `apps/web/app/api/cron/cleanup-trash/route.ts`, `apps/web/app/api/v1/upload-token/route.ts`, `apps/web/lib/server/middleware.ts`, `apps/web/lib/server/services/auth-service.ts`, `apps/web/lib/server/services/category-service.ts` +9 more
+- `apps/web/lib/server/utils/logger.ts` ← `apps/web/app/api/cron/cleanup-trash/route.ts`, `apps/web/app/api/v1/upload-token/route.ts`, `apps/web/lib/server/middleware.ts`, `apps/web/lib/server/services/auth-service.ts`, `apps/web/lib/server/services/category-service.ts` +10 more
 - `apps/web/lib/date.ts` ← `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/trash/page.tsx`, `apps/web/app/(app)/workspaces/page.tsx`, `apps/web/app/invite/[token]/page.tsx` +4 more
 - `apps/web/lib/server/services/auth-service.ts` ← `apps/web/app/api/v1/auth/forgot-password/route.ts`, `apps/web/app/api/v1/auth/login/route.ts`, `apps/web/app/api/v1/auth/logout/route.ts`, `apps/web/app/api/v1/auth/refresh/route.ts`, `apps/web/app/api/v1/auth/register/route.ts` +4 more
 

@@ -2,9 +2,9 @@
 
 > **Navigation aid.** Library inventory extracted via AST. Read the source files listed here before modifying exported functions.
 
-**39 library files** across 5 modules
+**41 library files** across 5 modules
 
-## Web (31 files)
+## Web (33 files)
 
 - `apps/web/lib/image-upload.ts` — getWorkerUrl, getUploadConfig, saveWorkerUrl, clearWorkerUrl, isImageUploadEnabled, setImageUploadEnabled, …
 - `apps/web/lib/server/utils/errors.ts` — notFound, forbidden, unauthorized, badRequest, conflict, gone, …
@@ -31,7 +31,7 @@
 - `apps/web/lib/server/services/join-request-service.ts` — createJoinRequestService
 - `apps/web/lib/server/services/member-service.ts` — createMemberService
 - `apps/web/lib/server/services/relation-service.ts` — createRelationService
-- _…and 6 more files_
+- _…and 8 more files_
 
 ## Editor (5 files)
 

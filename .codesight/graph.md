@@ -9,7 +9,7 @@
 - `apps/web/stores/toast-store.ts` — imported by **20** files
 - `apps/web/stores/workspace-store.ts` — imported by **19** files
 - `apps/web/lib/types.ts` — imported by **16** files
-- `apps/web/lib/server/utils/logger.ts` — imported by **14** files
+- `apps/web/lib/server/utils/logger.ts` — imported by **15** files
 - `apps/web/lib/date.ts` — imported by **9** files
 - `apps/web/lib/server/services/auth-service.ts` — imported by **9** files
 - `packages/db/src/schema/users.ts` — imported by **9** files
@@ -32,6 +32,6 @@
 - `apps/web/stores/toast-store.ts` ← `apps/web/__tests__/stores/toast-store.test.ts`, `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/new/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/settings/embed/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/settings/storage/page.tsx` +15 more
 - `apps/web/stores/workspace-store.ts` ← `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/new/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/graph/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/layout.tsx` +14 more
 - `apps/web/lib/types.ts` ← `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/new/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/graph/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/settings/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/trash/page.tsx` +11 more
-- `apps/web/lib/server/utils/logger.ts` ← `apps/web/app/api/cron/cleanup-trash/route.ts`, `apps/web/app/api/v1/upload-token/route.ts`, `apps/web/lib/server/middleware.ts`, `apps/web/lib/server/services/auth-service.ts`, `apps/web/lib/server/services/category-service.ts` +9 more
+- `apps/web/lib/server/utils/logger.ts` ← `apps/web/app/api/cron/cleanup-trash/route.ts`, `apps/web/app/api/v1/upload-token/route.ts`, `apps/web/lib/server/middleware.ts`, `apps/web/lib/server/services/auth-service.ts`, `apps/web/lib/server/services/category-service.ts` +10 more
 - `apps/web/lib/date.ts` ← `apps/web/app/(app)/[workspaceSlug]/doc/[docId]/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/doc/page.tsx`, `apps/web/app/(app)/[workspaceSlug]/trash/page.tsx`, `apps/web/app/(app)/workspaces/page.tsx`, `apps/web/app/invite/[token]/page.tsx` +4 more
 - `apps/web/lib/server/services/auth-service.ts` ← `apps/web/app/api/v1/auth/forgot-password/route.ts`, `apps/web/app/api/v1/auth/login/route.ts`, `apps/web/app/api/v1/auth/logout/route.ts`, `apps/web/app/api/v1/auth/refresh/route.ts`, `apps/web/app/api/v1/auth/register/route.ts` +4 more

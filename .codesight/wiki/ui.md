@@ -44,7 +44,7 @@
 - **JoinRequestPanel** — props: onRequestSent — `apps/web/components/join-request-panel.tsx`
 - **LinkPreview** — props: containerRef, workspaceId — `apps/web/components/link-preview.tsx`
 - **MindMapCanvas** — props: nodes, edges, categories, selectedDocId, onSelectDoc, onRightClickDoc, tagLinks, dark — `apps/web/components/mind-map-canvas.tsx`
-- **MiniDagDiagram** — props: currentTitle, categoryName, prev, next, related, onClickFullView — `apps/web/components/mini-dag-diagram.tsx`
+- **MiniDagDiagram** — props: currentTitle, categoryName, prev, next, siblings, onClickFullView — `apps/web/components/mini-dag-diagram.tsx`
 - **NewDocModal** — props: open, onClose, workspaceSlug, workspaceId, categories — `apps/web/components/new-doc-modal.tsx`
 - **NewFolderModal** — props: open, onClose, workspaceId, categories, defaultParentId, onCreated — `apps/web/components/new-folder-modal.tsx`
 - **PasswordChangeModal** — props: isOpen, onClose — `apps/web/components/password-change-modal.tsx`

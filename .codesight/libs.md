@@ -60,6 +60,7 @@
   - function passwordResetEmailHtml: (resetUrl) => string
   - function invitationEmailHtml: (inviteUrl, workspaceName, inviterName) => string
   - const FRONTEND_URL
+- `apps/web/lib/server/utils/embed-images.ts` — function embedImagesInHtml: (html, options?) => Promise<string>
 - `apps/web/lib/server/utils/errors.ts`
   - function notFound: (message) => AppError
   - function forbidden: (message) => AppError
@@ -80,6 +81,7 @@
   - function hashPassword: (password) => Promise<string>
   - function comparePassword: (password, hash) => Promise<boolean>
   - function validatePassword: (password) => void
+- `apps/web/lib/server/utils/pdf-template.ts` — function wrapForPdf: (title, bodyHtml) => string
 - `apps/worker/src/helpers.ts`
   - function corsHeaders: (request, env) => Record<string, string>
   - function jsonResponse: (body, status, cors, string>) => Response
