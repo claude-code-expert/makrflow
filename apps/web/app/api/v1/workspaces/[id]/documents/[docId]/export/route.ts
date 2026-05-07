@@ -13,12 +13,23 @@ export async function GET(
     await checkRole(currentUser, id, 'viewer');
 
     const format = request.nextUrl.searchParams.get('format') ?? 'md';
+    const embed = request.nextUrl.searchParams.get('embed') !== 'false';
 
     const db = getDb();
     const exportService = createExportService(db);
 
+    if (format === 'pdf') {
+      const { content, filename } = await exportService.exportDocumentPdfHtml(docId, id);
+      return new NextResponse(content, {
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Content-Disposition': `inline; filename="${encodeURIComponent(filename)}"`,
+        },
+      });
+    }
+
     if (format === 'html') {
-      const { content, filename } = await exportService.exportDocumentHtml(docId, id);
+      const { content, filename } = await exportService.exportDocumentHtml(docId, id, { embed });
       return new NextResponse(content, {
         headers: {
           'Content-Type': 'text/html; charset=utf-8',

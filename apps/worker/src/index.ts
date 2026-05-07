@@ -25,6 +25,22 @@ export default {
       return jsonResponse({ status: 'ok', service: 'markflow-r2-uploader' }, 200, cors)
     }
 
+    // ── Serve image (GET proxy) ─────────────────────────────────────────────
+    if (url.pathname.startsWith('/images/') && request.method === 'GET') {
+      const key = url.pathname.slice(1) // remove leading "/"
+      const object = await env.BUCKET.get(key)
+
+      if (!object) {
+        return jsonResponse({ success: false, error: 'Not found' }, 404, cors)
+      }
+
+      const headers = new Headers(cors)
+      headers.set('Content-Type', object.httpMetadata?.contentType || 'application/octet-stream')
+      headers.set('Cache-Control', 'public, max-age=31536000, immutable')
+
+      return new Response(object.body, { status: 200, headers })
+    }
+
     // ── Upload ─────────────────────────────────────────────────────────────
     if (url.pathname === '/upload' && request.method === 'POST') {
       // Bearer token authentication (D-05: skip if API_SECRET not set)

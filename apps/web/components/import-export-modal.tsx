@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
-  Download, Upload, FileText, Globe, FolderOpen, FileDown, Crown, Folder,
+  Download, Upload, FileText, Globe, FolderOpen, FileDown, Folder,
 } from 'lucide-react';
 import { apiFetch, ApiError } from '../lib/api';
 import { useToastStore } from '../stores/toast-store';
@@ -122,6 +122,26 @@ export function ImportExportModal({
 
       if (!res.ok) throw new Error('Export failed');
 
+      // PDF: server returns image-embedded HTML, open in new window for print-to-PDF
+      if (exportFormat === 'pdf' && exportScope === 'document') {
+        const htmlText = await res.text();
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) {
+          addToast({ message: '팝업이 차단되었습니다. 팝업 허용 후 다시 시도해주세요.', type: 'error' });
+          return;
+        }
+        printWindow.document.write(htmlText);
+        printWindow.document.close();
+
+        printWindow.onafterprint = () => printWindow.close();
+        // Wait for fonts/images to load before printing
+        printWindow.onload = () => printWindow.print();
+
+        addToast({ message: 'PDF로 저장하려면 인쇄 대화상자에서 "PDF로 저장"을 선택하세요.', type: 'info' });
+        onClose();
+        return;
+      }
+
       const disposition = res.headers.get('Content-Disposition');
       const filenameMatch = disposition?.match(/filename="?([^"]+)"?/);
       const filename = filenameMatch?.[1] ? decodeURIComponent(filenameMatch[1]) : defaultFilename;
@@ -142,7 +162,7 @@ export function ImportExportModal({
     } finally {
       setProcessing(false);
     }
-  }, [processing, exportScope, exportFormat, selectedDocId, selectedCatId, workspaceId, addToast, onClose]);
+  }, [processing, exportScope, exportFormat, selectedDocId, selectedCatId, workspaceId, allDocs, addToast, onClose]);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -303,17 +323,16 @@ export function ImportExportModal({
                   {([
                     { id: 'md' as const, icon: <FileText size={20} />, title: 'Markdown', desc: '.md 파일로 다운로드' },
                     { id: 'html' as const, icon: <Globe size={20} />, title: 'HTML', desc: '렌더링된 HTML + CSS 포함' },
-                    { id: 'pdf' as const, icon: <FileDown size={20} />, title: 'PDF', desc: '인쇄용 PDF 생성', badge: 'Pro' },
+                    { id: 'pdf' as const, icon: <FileDown size={20} />, title: 'PDF', desc: '인쇄용 A4 PDF 생성' },
                   ]).map((fmt) => (
                     <div
                       key={fmt.id}
-                      onClick={() => { if (fmt.id !== 'pdf') setExportFormat(fmt.id); }}
+                      onClick={() => setExportFormat(fmt.id)}
                       style={{
                         padding: '16px 14px', borderRadius: 'var(--radius)',
                         border: `1.5px solid ${exportFormat === fmt.id ? 'var(--accent)' : 'var(--border)'}`,
                         background: exportFormat === fmt.id ? 'var(--accent-2)' : 'var(--bg)',
-                        cursor: fmt.id === 'pdf' ? 'not-allowed' : 'pointer',
-                        opacity: fmt.id === 'pdf' ? 0.5 : 1,
+                        cursor: 'pointer',
                         transition: 'all 0.15s',
                       }}
                     >
@@ -322,15 +341,6 @@ export function ImportExportModal({
                       </div>
                       <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '2px' }}>
                         {fmt.title}
-                        {fmt.badge && (
-                          <span style={{
-                            display: 'inline-flex', alignItems: 'center', gap: '3px',
-                            marginLeft: '6px', padding: '1px 6px', fontSize: '10px', fontWeight: 600,
-                            background: 'var(--purple-lt)', color: 'var(--purple)', borderRadius: '100px',
-                          }}>
-                            <Crown size={9} /> {fmt.badge}
-                          </span>
-                        )}
                       </div>
                       <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>{fmt.desc}</div>
                     </div>
@@ -425,7 +435,9 @@ export function ImportExportModal({
                 opacity: (processing || !canExport) ? 0.6 : 1,
               }}
             >
-              {processing ? '처리 중...' : '내보내기'}
+              {processing
+                ? (exportFormat === 'pdf' ? 'PDF 생성 중...' : '처리 중...')
+                : '내보내기'}
             </button>
           )}
         </div>

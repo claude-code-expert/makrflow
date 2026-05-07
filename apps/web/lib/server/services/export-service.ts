@@ -16,6 +16,8 @@ import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import { notFound } from '../utils/errors';
 import { escapeHtml } from '../utils/html';
+import { embedImagesInHtml } from '../utils/embed-images';
+import { wrapForPdf } from '../utils/pdf-template';
 import { logger } from '../utils/logger';
 
 const markdownToHtml = unified()
@@ -181,10 +183,7 @@ export function createExportService(db: Db) {
     return { filename, buffer };
   }
 
-  /**
-   * Export a single document as rendered HTML.
-   */
-  async function exportDocumentHtml(documentId: string, workspaceId: string) {
+  async function fetchDocument(documentId: string, workspaceId: string) {
     const [doc] = await db
       .select({
         id: documents.id,
@@ -202,8 +201,25 @@ export function createExportService(db: Db) {
     if (!doc) {
       throw notFound('Document not found');
     }
+    return doc;
+  }
+
+  /**
+   * Export a single document as rendered HTML.
+   * When embed is true (default), external images from allowed domains
+   * are converted to inline base64 data URIs.
+   */
+  async function exportDocumentHtml(
+    documentId: string,
+    workspaceId: string,
+    options?: { embed?: boolean },
+  ) {
+    const embed = options?.embed ?? true;
+    const doc = await fetchDocument(documentId, workspaceId);
 
     const rendered = await markdownToHtml.process(doc.content);
+    let bodyHtml = String(rendered);
+
     const html = `<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -225,15 +241,39 @@ img { max-width: 100%; }
 </head>
 <body>
 <h1>${escapeHtml(doc.title)}</h1>
-${String(rendered)}
+${bodyHtml}
 </body>
 </html>`;
 
-    const filename = `${doc.title}.html`;
-    logger.info('Document exported as HTML', { documentId, filename });
+    let finalHtml = html;
+    if (embed) {
+      finalHtml = await embedImagesInHtml(html);
+    }
 
-    return { filename, content: html };
+    const filename = `${doc.title}.html`;
+    logger.info('Document exported as HTML', { documentId, filename, embed });
+
+    return { filename, content: finalHtml };
   }
 
-  return { exportDocument, exportDocumentHtml, exportCategory };
+  /**
+   * Export a single document as A4-optimized HTML for PDF generation.
+   * Images are always embedded as base64 data URIs.
+   */
+  async function exportDocumentPdfHtml(documentId: string, workspaceId: string) {
+    const doc = await fetchDocument(documentId, workspaceId);
+
+    const rendered = await markdownToHtml.process(doc.content);
+    const bodyHtml = String(rendered);
+
+    const html = wrapForPdf(doc.title, bodyHtml);
+    const finalHtml = await embedImagesInHtml(html);
+
+    const filename = `${doc.title}.pdf`;
+    logger.info('Document exported as PDF HTML', { documentId, filename });
+
+    return { filename, content: finalHtml, title: doc.title };
+  }
+
+  return { exportDocument, exportDocumentHtml, exportDocumentPdfHtml, exportCategory };
 }
